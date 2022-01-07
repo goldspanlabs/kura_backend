@@ -1,4 +1,4 @@
-# KuraBackend
+# Kura Backend
 
 To start your Phoenix server:
 
