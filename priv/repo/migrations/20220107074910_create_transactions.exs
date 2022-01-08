@@ -11,7 +11,7 @@ defmodule KuraBackend.Repo.Migrations.CreateTransactions do
       add :quantity, :integer
       add :asset_type, :string
       add :action, :string
-      add :strategy, references(:strategies, on_delete: :nothing, type: :binary_id)
+      add :strategy_id, references(:strategies, on_delete: :nothing, type: :binary_id)
 
       add :trading_account_id,
           references(:trading_accounts, on_delete: :nothing, type: :binary_id)
@@ -19,7 +19,7 @@ defmodule KuraBackend.Repo.Migrations.CreateTransactions do
       timestamps()
     end
 
-    create index(:transactions, [:strategy])
+    create index(:transactions, [:strategy_id])
     create index(:transactions, [:trading_account_id])
   end
 end

@@ -12,7 +12,7 @@ defmodule KuraBackend.Transactions.Transaction do
     field :quantity, :integer
     field :symbol, :string
     field :trade_date, :date
-    field :strategy, :binary_id
+    field :strategy_id, :binary_id
     field :trading_account_id, :binary_id
 
     timestamps()
@@ -21,7 +21,27 @@ defmodule KuraBackend.Transactions.Transaction do
   @doc false
   def changeset(transaction, attrs) do
     transaction
-    |> cast(attrs, [:symbol, :trade_date, :price, :fee, :quantity, :asset_type, :action])
-    |> validate_required([:symbol, :trade_date, :price, :fee, :quantity, :asset_type, :action])
+    |> cast(attrs, [
+      :symbol,
+      :trade_date,
+      :price,
+      :fee,
+      :quantity,
+      :asset_type,
+      :action,
+      :strategy_id,
+      :trading_account_id
+    ])
+    |> validate_required([
+      :symbol,
+      :trade_date,
+      :price,
+      :fee,
+      :quantity,
+      :asset_type,
+      :action,
+      :strategy_id,
+      :trading_account_id
+    ])
   end
 end

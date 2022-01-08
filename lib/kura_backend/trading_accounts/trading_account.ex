@@ -15,7 +15,7 @@ defmodule KuraBackend.TradingAccounts.TradingAccount do
   @doc false
   def changeset(trading_account, attrs) do
     trading_account
-    |> cast(attrs, [:currency, :name])
-    |> validate_required([:currency, :name])
+    |> cast(attrs, [:currency, :name, :user_id])
+    |> validate_required([:currency, :name, :user_id])
   end
 end

@@ -2,10 +2,11 @@ defmodule KuraBackend.Strategies.Strategy do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
   schema "strategies" do
     field :label, :string
     field :legs, :integer
-    field :name, :string
 
     timestamps()
   end
@@ -13,7 +14,7 @@ defmodule KuraBackend.Strategies.Strategy do
   @doc false
   def changeset(strategy, attrs) do
     strategy
-    |> cast(attrs, [:name, :label, :legs])
-    |> validate_required([:name, :label, :legs])
+    |> cast(attrs, [:label, :legs])
+    |> validate_required([:label, :legs])
   end
 end
