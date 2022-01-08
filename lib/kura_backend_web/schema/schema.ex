@@ -11,7 +11,7 @@ defmodule KuraBackendWeb.Schema do
   end
 
   mutation do
-    import_fields(:login_mutation)
+    import_fields(:session_mutation)
     import_fields(:create_user_mutation)
   end
 end

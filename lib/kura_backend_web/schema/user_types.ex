@@ -15,7 +15,7 @@ defmodule KuraBackendWeb.Schema.UserTypes do
     """
 
     @desc "Create a user"
-    field :create_user, :user do
+    field :sign_up, :user do
       arg(:email, non_null(:string))
       arg(:password, non_null(:string))
 
@@ -23,12 +23,12 @@ defmodule KuraBackendWeb.Schema.UserTypes do
     end
   end
 
-  object :login_mutation do
+  object :session_mutation do
     @desc """
     login with the params
     """
 
-    field :create_session, :session do
+    field :login, :session do
       arg(:email, non_null(:string))
       arg(:password, non_null(:string))
       resolve(&Resolvers.Accounts.login/2)
