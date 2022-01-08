@@ -7,7 +7,6 @@ defmodule KuraBackendWeb.Schema do
   import_types(Schema.TradingAccountTypes)
 
   query do
-    import_fields(:user)
     import_fields(:trading_accounts)
   end
 
