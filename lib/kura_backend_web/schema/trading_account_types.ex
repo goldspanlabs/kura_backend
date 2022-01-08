@@ -14,6 +14,8 @@ defmodule KuraBackendWeb.Schema.TradingAccountTypes do
   @desc "List trading accounts"
   object :trading_accounts do
     field :trading_accounts, list_of(:trading_account) do
+      arg(:user_id, non_null(:id))
+
       middleware(Middleware.Authorize)
       resolve(&Resolvers.TradingAccount.list_trading_accounts/3)
     end

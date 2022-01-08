@@ -17,8 +17,8 @@ defmodule KuraBackend.TradingAccounts do
       [%TradingAccount{}, ...]
 
   """
-  def list_trading_accounts do
-    Repo.all(TradingAccount)
+  def list_trading_accounts(user_id) do
+    Repo.all(from ta in TradingAccount, where: ta.user_id == ^user_id)
   end
 
   @doc """
