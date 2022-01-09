@@ -4,7 +4,7 @@ defmodule KuraBackendWeb.Schema.PositionTypes do
   alias KuraBackendWeb.Resolvers
   alias KuraBackendWeb.Schema.Middleware
 
-  import_types Absinthe.Type.Custom
+  import_types(Absinthe.Type.Custom)
 
   object :open_position do
     field :symbol, :string
