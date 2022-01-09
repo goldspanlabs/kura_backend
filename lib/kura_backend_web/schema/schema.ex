@@ -5,9 +5,11 @@ defmodule KuraBackendWeb.Schema do
 
   import_types(Schema.UserTypes)
   import_types(Schema.TradingAccountTypes)
+  import_types(Schema.PositionTypes)
 
   query do
     import_fields(:trading_accounts)
+    import_fields(:position_queries)
   end
 
   mutation do
