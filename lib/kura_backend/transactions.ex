@@ -4,9 +4,13 @@ defmodule KuraBackend.Transactions do
   """
 
   import Ecto.Query, warn: false
+  import KuraBackend.Query
+
   alias KuraBackend.Repo
 
   alias KuraBackend.Transactions.Transaction
+  alias KuraBackend.Strategies.Strategy
+  alias KuraBackend.TradingAccounts.TradingAccount
 
   @doc """
   Returns the list of transactions.
@@ -19,6 +23,32 @@ defmodule KuraBackend.Transactions do
   """
   def list_transactions do
     Repo.all(Transaction)
+  end
+
+  def list_transactions_with_costs(user_id) do
+    Transaction
+    |> join(:inner, [t], s in Strategy, as: :s, on: s.id == t.strategy_id)
+    |> join(:inner, [t, _], a in TradingAccount, as: :a, on: a.id == t.trading_account_id)
+    |> select([t, s: s, a: a], %{
+      id: t.id,
+      symbol: t.symbol,
+      strategy: s.label,
+      trade_date: t.trade_date,
+      price: t.price,
+      fee: t.fee,
+      quantity: t.quantity,
+      total_cost:
+        case_when(t.asset_type == "option",
+          do: t.price * t.quantity * 100 + t.fee,
+          else: t.price + t.quantity + t.fee
+        ),
+      asset_type: t.asset_type,
+      action: t.action,
+      trading_account_id: t.trading_account_id,
+      trading_account_name: a.name
+    })
+    |> where([a: a], a.user_id == ^user_id)
+    |> Repo.all()
   end
 
   @doc """

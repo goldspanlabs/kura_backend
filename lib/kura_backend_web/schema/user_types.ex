@@ -9,7 +9,7 @@ defmodule KuraBackendWeb.Schema.UserTypes do
     field :id, :id
   end
 
-  object :create_user_mutation do
+  object :user_mutations do
     @desc """
     create user
     """
@@ -23,7 +23,7 @@ defmodule KuraBackendWeb.Schema.UserTypes do
     end
   end
 
-  object :session_mutation do
+  object :session_mutations do
     @desc """
     login with the params
     """
