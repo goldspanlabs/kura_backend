@@ -7,7 +7,7 @@ defmodule KuraBackend.Positions do
   alias KuraBackend.TradingAccounts.TradingAccount
   alias KuraBackend.Strategies.Strategy
 
-  def base(user_id) do
+  defp base(user_id) do
     Transaction
     |> join(:inner, [t], a in TradingAccount, on: t.trading_account_id == a.id)
     |> join(:inner, [t], s in Strategy, on: t.strategy_id == s.id)
@@ -59,7 +59,7 @@ defmodule KuraBackend.Positions do
     })
   end
 
-  def open_averages(user_id) do
+  defp open_averages(user_id) do
     subquery(trades(user_id))
     |> select([b], %{
       symbol: b.symbol,
@@ -97,7 +97,36 @@ defmodule KuraBackend.Positions do
     |> having([b], b.quantity != 0)
   end
 
-  @spec open_positions(any) :: Ecto.Query.t()
+  defp grouped_trades(user_id) do
+    subquery(trades(user_id))
+    |> select([t], %{
+      symbol: t.symbol,
+      strategy: t.strategy,
+      action: t.action,
+      expiration: t.expiration,
+      option_type: t.option_type,
+      strike: t.strike,
+      asset_type: t.asset_type,
+      trading_account_name: t.trading_account_name,
+      trading_account_id: t.trading_account_id,
+      trade_date: max(t.trade_date),
+      quantity: sum(t.quantity),
+      total_cost: sum(t.total_cost),
+      fee: sum(t.fee)
+    })
+    |> group_by([t], [
+      t.symbol,
+      t.strategy,
+      t.action,
+      t.expiration,
+      t.option_type,
+      t.strike,
+      t.asset_type,
+      t.trading_account_name,
+      t.trading_account_id
+    ])
+  end
+
   def open_positions(user_id) do
     subquery(open_averages(user_id))
     |> join(:inner, [oa], t in subquery(trades(user_id)), on: t.symbol == oa.symbol)
@@ -133,6 +162,30 @@ defmodule KuraBackend.Positions do
   end
 
   def closed_positions(user_id) do
-    open_averages(user_id) |> Repo.all()
+    subquery(trades(user_id))
+    |> join(:inner, [t], t2 in subquery(grouped_trades(user_id)),
+      on:
+        t.symbol == t2.symbol and t.strategy == t2.strategy and
+          t.trading_account_id == t2.trading_account_id
+    )
+    |> select([t, t2], %{
+      symbol: t.symbol,
+      strategy: t.strategy,
+      expiration: t.expiration,
+      entry_date: t.trade_date,
+      exit_date: t2.trade_date,
+      days_in_trade: t2.trade_date - t.trade_date,
+      entry_cost: t.total_cost,
+      exit_cost: t2.total_cost,
+      total_fees: t.fee + t2.fee,
+      realized_pnl: t.total_cost + t2.total_cost,
+      trading_account_id: t.trading_account_id,
+      trading_account_name: t.trading_account_name
+    })
+    |> where(
+      [t, t2],
+      (t.action == "BTO" or t.action == "STO") and (t2.action != "BTO" and t2.action != "STO")
+    )
+    |> Repo.all()
   end
 end

@@ -24,11 +24,7 @@ defmodule KuraBackendWeb.Schema.PositionTypes do
 
   object :closed_position do
     field :symbol, :string
-    field :symbol_label, :string
-    field :root, :string
     field :strategy, :string
-    field :strategy_label, :string
-    field :expiration, :date
     field :entry_date, :date
     field :exit_date, :date
     field :days_in_trade, :integer
@@ -36,9 +32,8 @@ defmodule KuraBackendWeb.Schema.PositionTypes do
     field :exit_cost, :decimal
     field :total_fees, :decimal
     field :realized_pnl, :decimal
-    field :account_id, :string
-    field :account_name, :string
-    field :user_id, :string
+    field :trading_account_id, :string
+    field :trading_account_name, :string
   end
 
   @desc "List user positions"
