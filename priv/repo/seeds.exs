@@ -42,7 +42,6 @@ defmodule Seeds do
   end
 
   def run do
-
     Repo.truncate(Transaction, :cascade)
     Repo.truncate(TradingAccount, :cascade)
     Repo.truncate(User, :cascade)
@@ -70,7 +69,7 @@ defmodule Seeds do
         trading_account_id: account.id
       },
       %{
-        symbol: "ABCD",
+        symbol: "ABCD 1 Jan 31 15 C",
         trade_date: ~D[2022-01-01],
         price: 1.00,
         fee: 11.24,
@@ -84,7 +83,7 @@ defmodule Seeds do
         trading_account_id: account.id
       },
       %{
-        symbol: "ABCD",
+        symbol: "ABCD 1 Jan 31 15 P",
         trade_date: ~D[2022-01-01],
         price: 1.00,
         fee: 11.24,
@@ -109,7 +108,7 @@ defmodule Seeds do
         trading_account_id: account_2.id
       },
       %{
-        symbol: "ABCD",
+        symbol: "ABCD 1 Jan 31 15 C",
         trade_date: ~D[2022-01-01],
         price: 1.00,
         fee: 11.24,
@@ -123,7 +122,7 @@ defmodule Seeds do
         trading_account_id: account_2.id
       },
       %{
-        symbol: "ABCD",
+        symbol: "ABCD 1 Jan 31 15 P",
         trade_date: ~D[2022-01-01],
         price: 1.00,
         fee: 11.24,

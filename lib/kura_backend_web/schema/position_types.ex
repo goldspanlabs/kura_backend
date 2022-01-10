@@ -8,22 +8,18 @@ defmodule KuraBackendWeb.Schema.PositionTypes do
 
   object :open_position do
     field :symbol, :string
-    field :symbol_label, :string
-    field :root, :string
     field :strategy, :string
-    field :strategy_label, :string
     field :trade_date, :date
     field :expiration, :date
+    field :strike, :decimal
     field :option_type, :string
+    field :quantity, :integer
     field :avg_price, :decimal
     field :book_cost, :decimal
-    field :quantity, :integer
     field :days_from_expiration, :integer
     field :days_to_expiration, :integer
-    field :strike, :decimal
-    field :account_id, :string
-    field :account_name, :string
-    field :user_id, :string
+    field :trading_account_id, :string
+    field :trading_account_name, :string
   end
 
   object :closed_position do

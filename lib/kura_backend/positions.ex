@@ -1,5 +1,6 @@
 defmodule KuraBackend.Positions do
   import Ecto.Query, warn: false
+  import KuraBackend.Query
 
   alias KuraBackend.Repo
   alias KuraBackend.Transactions.Transaction
@@ -20,27 +21,118 @@ defmodule KuraBackend.Positions do
       fee: t.fee,
       price: t.price,
       quantity: t.quantity,
+      expiration: t.expiration,
+      strike: t.strike,
+      option_type: t.option_type,
       total_cost:
-        fragment(
-          "CASE WHEN ? = 'option' THEN (? * ? * 100) + ? ELSE (? * ?) + ? END",
-          t.asset_type,
-          t.price,
-          t.quantity,
-          t.fee,
-          t.price,
-          t.quantity,
-          t.fee
+        case_when(t.asset_type == "option",
+          do: t.price * t.quantity * 100 + t.fee,
+          else: t.price * t.quantity + t.fee
         ),
       trading_account_name: a.name,
       trading_account_id: a.id
     })
   end
 
+  def trades(user_id) do
+    subquery(base(user_id))
+    |> select([b], %{
+      strategy: b.strategy,
+      symbol: b.symbol,
+      action: b.action,
+      asset_type: b.asset_type,
+      trade_date: b.trade_date,
+      fee: b.fee,
+      price: b.price,
+      quantity: b.quantity,
+      expiration: b.expiration,
+      strike: b.strike,
+      option_type: b.option_type,
+      total_cost: b.total_cost,
+      adjusted_price:
+        case_when(b.asset_type == "option",
+          do: b.total_cost / 100 / b.quantity,
+          else: b.total_cost / b.quantity
+        ),
+      trading_account_name: b.trading_account_name,
+      trading_account_id: b.trading_account_id
+    })
+  end
+
+  def open_averages(user_id) do
+    subquery(trades(user_id))
+    |> select([b], %{
+      symbol: b.symbol,
+      strategy: b.strategy,
+      action: b.action,
+      quantity: b.quantity,
+      price: b.price,
+      fee: b.fee,
+      expiration: b.expiration,
+      strike: b.strike,
+      asset_type: b.asset_type,
+      option_type: b.option_type,
+      avg_price: fragment("round(weighted_avg(?, ?)::NUMERIC, 2)", b.adjusted_price, b.quantity),
+      trading_account_name: b.trading_account_name,
+      trading_account_id: b.trading_account_id
+    })
+    |> group_by([b], [
+      b.symbol,
+      b.strategy,
+      b.action,
+      b.expiration,
+      b.option_type,
+      b.strike,
+      b.asset_type,
+      b.quantity,
+      b.price,
+      b.fee,
+      b.expiration,
+      b.option_type,
+      b.strike,
+      b.option_type,
+      b.trading_account_name,
+      b.trading_account_id
+    ])
+    |> having([b], b.quantity != 0)
+  end
+
+  @spec open_positions(any) :: Ecto.Query.t()
   def open_positions(user_id) do
-    base(user_id) |> Repo.all()
+    subquery(open_averages(user_id))
+    |> join(:inner, [oa], t in subquery(trades(user_id)), on: t.symbol == oa.symbol)
+    |> select([oa, t], %{
+      symbol: oa.symbol,
+      strategy: oa.strategy,
+      trade_date: max(t.trade_date),
+      expiration: oa.expiration,
+      strike: oa.strike,
+      option_type: oa.option_type,
+      quantity: sum(t.quantity),
+      avg_price: oa.avg_price,
+      book_cost: sum(t.total_cost),
+      days_from_expiration: sum(oa.expiration - t.trade_date),
+      days_to_expiration:
+        fragment("(EXTRACT(epoch FROM (SELECT (? - now()))) / 86400)::INT", oa.expiration),
+      asset_type: oa.asset_type,
+      trading_account_id: oa.trading_account_id,
+      trading_account_name: oa.trading_account_name
+    })
+    |> group_by([oa, t], [
+      oa.symbol,
+      oa.strategy,
+      oa.avg_price,
+      oa.expiration,
+      oa.option_type,
+      oa.strike,
+      oa.asset_type,
+      oa.trading_account_id,
+      oa.trading_account_name
+    ])
+    |> Repo.all()
   end
 
   def closed_positions(user_id) do
-    base(user_id) |> Repo.all()
+    open_averages(user_id) |> Repo.all()
   end
 end
