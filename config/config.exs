@@ -7,15 +7,15 @@
 # General application configuration
 import Config
 
-config :kura_backend,
-  ecto_repos: [KuraBackend.Repo],
+config :kura,
+  ecto_repos: [Kura.Repo],
   generators: [binary_id: true]
 
 # Configures the endpoint
-config :kura_backend, KuraBackendWeb.Endpoint,
+config :kura, KuraWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: KuraBackendWeb.ErrorView, accepts: ~w(json), layout: false],
-  pubsub_server: KuraBackend.PubSub,
+  render_errors: [view: KuraWeb.ErrorView, accepts: ~w(json), layout: false],
+  pubsub_server: Kura.PubSub,
   live_view: [signing_salt: "LkjIT/PH"]
 
 # Configures the mailer
@@ -25,7 +25,7 @@ config :kura_backend, KuraBackendWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :kura_backend, KuraBackend.Mailer, adapter: Swoosh.Adapters.Local
+config :kura, Kura.Mailer, adapter: Swoosh.Adapters.Local
 
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
@@ -38,16 +38,16 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :kura_backend, KuraBackend.Guardian,
-  issuer: "kura_backend",
+config :kura, Kura.Guardian,
+  issuer: "kura",
   secret_key: "fautE4a7EGRUHC2h74img9VQriNAs3ljueMmWM6IFbPgSST/U+crIDq1gxyBOHQ373o=",
   ttl: {3, :days}
 
-config :kura_backend, KuraBackendWeb.AuthAccessPipeline,
-  module: KuraBackend.Guardian,
-  error_handler: KuraBackendWeb.AuthErrorHandler
+config :kura, KuraWeb.AuthAccessPipeline,
+  module: Kura.Guardian,
+  error_handler: KuraWeb.AuthErrorHandler
 
-config :kura_backend, KuraBackend.Mailer,
+config :kura, Kura.Mailer,
   adapter: Bamboo.MandrillAdapter,
   api_key: "my_api_key"
 

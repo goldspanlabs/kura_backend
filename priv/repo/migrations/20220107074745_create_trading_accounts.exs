@@ -1,4 +1,4 @@
-defmodule KuraBackend.Repo.Migrations.CreateTradingAccounts do
+defmodule Kura.Repo.Migrations.CreateTradingAccounts do
   use Ecto.Migration
 
   def change do

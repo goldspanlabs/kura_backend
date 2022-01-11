@@ -1,7 +1,7 @@
-defmodule KuraBackendWeb.Schema do
+defmodule KuraWeb.Schema do
   use Absinthe.Schema
 
-  alias KuraBackendWeb.Schema
+  alias KuraWeb.Schema
 
   import_types(Absinthe.Type.Custom)
   import_types(Schema.UserTypes)

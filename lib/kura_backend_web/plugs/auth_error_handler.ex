@@ -1,4 +1,4 @@
-defmodule KuraBackendWeb.AuthErrorHandler do
+defmodule KuraWeb.AuthErrorHandler do
   import Plug.Conn
 
   @behaviour Guardian.Plug.ErrorHandler

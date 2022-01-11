@@ -5,7 +5,7 @@ import Config
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
-config :kura_backend, KuraBackend.Repo,
+config :kura, Kura.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
@@ -15,13 +15,13 @@ config :kura_backend, KuraBackend.Repo,
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :kura_backend, KuraBackendWeb.Endpoint,
+config :kura, KuraWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "K1F6/Q30v8hxffvptLco/JPA/3XX4aCaLJLpwmriL36QSz8lpvZ562LmQwqLQcA2",
   server: false
 
 # In test we don't send emails.
-config :kura_backend, KuraBackend.Mailer, adapter: Swoosh.Adapters.Test
+config :kura, Kura.Mailer, adapter: Swoosh.Adapters.Test
 
 # Print only warnings and errors during test
 config :logger, level: :warn

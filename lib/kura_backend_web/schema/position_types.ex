@@ -1,8 +1,8 @@
-defmodule KuraBackendWeb.Schema.PositionTypes do
+defmodule KuraWeb.Schema.PositionTypes do
   use Absinthe.Schema.Notation
 
-  alias KuraBackendWeb.Resolvers
-  alias KuraBackendWeb.Schema.Middleware
+  alias KuraWeb.Resolvers
+  alias KuraWeb.Schema.Middleware
 
   object :open_position do
     field :symbol, :string

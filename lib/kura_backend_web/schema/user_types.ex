@@ -1,7 +1,7 @@
-defmodule KuraBackendWeb.Schema.UserTypes do
+defmodule KuraWeb.Schema.UserTypes do
   use Absinthe.Schema.Notation
 
-  alias KuraBackendWeb.Resolvers
+  alias KuraWeb.Resolvers
 
   @desc "A user"
   object :user do

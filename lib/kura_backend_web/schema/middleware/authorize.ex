@@ -1,4 +1,4 @@
-defmodule KuraBackendWeb.Schema.Middleware.Authorize do
+defmodule KuraWeb.Schema.Middleware.Authorize do
   @behaviour Absinthe.Middleware
 
   def call(resolution, _) do

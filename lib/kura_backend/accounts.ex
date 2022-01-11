@@ -1,12 +1,12 @@
-defmodule KuraBackend.Accounts do
+defmodule Kura.Accounts do
   @moduledoc """
   The Accounts context.
   """
 
   import Ecto.Query, warn: false
-  alias KuraBackend.Repo
+  alias Kura.Repo
 
-  alias KuraBackend.Accounts.{User, UserToken, UserNotifier}
+  alias Kura.Accounts.{User, UserToken, UserNotifier}
 
   ## Database getters
 

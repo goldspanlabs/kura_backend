@@ -1,6 +1,6 @@
-defmodule KuraBackend.Emails do
+defmodule Kura.Emails do
   import Bamboo.Email
-  use Bamboo.Phoenix, view: KuraBackendWeb.EmailView
+  use Bamboo.Phoenix, view: KuraWeb.EmailView
 
   @from "test@example.com"
 
@@ -19,9 +19,9 @@ defmodule KuraBackend.Emails do
     new_email()
     |> from(@from)
     # Set default layout
-    |> put_html_layout({KuraBackendWeb.LayoutView, "email.html"})
+    |> put_html_layout({KuraWeb.LayoutView, "email.html"})
     # Set default text layout
-    |> put_text_layout({KuraBackendWeb.LayoutView, "email.text"})
+    |> put_text_layout({KuraWeb.LayoutView, "email.text"})
   end
 
   defp premail(email) do

@@ -1,12 +1,12 @@
-defmodule KuraBackend.Goals do
+defmodule Kura.Goals do
   @moduledoc """
   The Goals context.
   """
 
   import Ecto.Query, warn: false
-  alias KuraBackend.Repo
+  alias Kura.Repo
 
-  alias KuraBackend.Goals.Goal
+  alias Kura.Goals.Goal
 
   @doc """
   Returns the list of goals.

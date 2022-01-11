@@ -1,12 +1,12 @@
-defmodule KuraBackendWeb do
+defmodule KuraWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use KuraBackendWeb, :controller
-      use KuraBackendWeb, :view
+      use KuraWeb, :controller
+      use KuraWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,11 +19,11 @@ defmodule KuraBackendWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: KuraBackendWeb
+      use Phoenix.Controller, namespace: KuraWeb
 
       import Plug.Conn
-      import KuraBackendWeb.Gettext
-      alias KuraBackendWeb.Router.Helpers, as: Routes
+      import KuraWeb.Gettext
+      alias KuraWeb.Router.Helpers, as: Routes
     end
   end
 
@@ -31,7 +31,7 @@ defmodule KuraBackendWeb do
     quote do
       use Phoenix.View,
         root: "lib/kura_backend_web/templates",
-        namespace: KuraBackendWeb
+        namespace: KuraWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -54,7 +54,7 @@ defmodule KuraBackendWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import KuraBackendWeb.Gettext
+      import KuraWeb.Gettext
     end
   end
 
@@ -63,9 +63,9 @@ defmodule KuraBackendWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import KuraBackendWeb.ErrorHelpers
-      import KuraBackendWeb.Gettext
-      alias KuraBackendWeb.Router.Helpers, as: Routes
+      import KuraWeb.ErrorHelpers
+      import KuraWeb.Gettext
+      alias KuraWeb.Router.Helpers, as: Routes
     end
   end
 

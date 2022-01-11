@@ -1,8 +1,8 @@
-defmodule KuraBackendWeb.Schema.TransactionTypes do
+defmodule KuraWeb.Schema.TransactionTypes do
   use Absinthe.Schema.Notation
 
-  alias KuraBackendWeb.Resolvers
-  alias KuraBackendWeb.Schema.Middleware
+  alias KuraWeb.Resolvers
+  alias KuraWeb.Schema.Middleware
 
   object :transaction do
     field :id, :string

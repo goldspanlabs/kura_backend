@@ -1,5 +1,5 @@
-defmodule KuraBackendWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :kura_backend
+defmodule KuraWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :kura
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
@@ -18,7 +18,7 @@ defmodule KuraBackendWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :kura_backend,
+    from: :kura,
     gzip: false,
     only: ~w(assets fonts images favicon.ico robots.txt)
 
@@ -26,7 +26,7 @@ defmodule KuraBackendWeb.Endpoint do
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :kura_backend
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :kura
   end
 
   plug Plug.RequestId
@@ -40,5 +40,5 @@ defmodule KuraBackendWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug KuraBackendWeb.Router
+  plug KuraWeb.Router
 end

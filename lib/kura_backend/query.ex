@@ -1,4 +1,4 @@
-defmodule KuraBackend.Query do
+defmodule Kura.Query do
   defmacro case_when(condition, do: then_expr, else: else_expr) do
     quote do
       fragment(

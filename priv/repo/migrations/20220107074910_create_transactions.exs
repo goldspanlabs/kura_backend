@@ -1,4 +1,4 @@
-defmodule KuraBackend.Repo.Migrations.CreateTransactions do
+defmodule Kura.Repo.Migrations.CreateTransactions do
   use Ecto.Migration
 
   def change do

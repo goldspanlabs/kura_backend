@@ -1,23 +1,23 @@
-defmodule KuraBackendWeb.Router do
-  use KuraBackendWeb, :router
+defmodule KuraWeb.Router do
+  use KuraWeb, :router
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   pipeline :api_authenticated do
-    plug KuraBackendWeb.AuthAccessPipeline
-    plug KuraBackendWeb.Context
+    plug KuraWeb.AuthAccessPipeline
+    plug KuraWeb.Context
   end
 
   pipeline :graphql do
-    plug KuraBackendWeb.Context
+    plug KuraWeb.Context
   end
 
   scope "/api" do
     pipe_through :api_authenticated
 
-    forward "/", Absinthe.Plug, schema: KuraBackendWeb.Schema
+    forward "/", Absinthe.Plug, schema: KuraWeb.Schema
   end
 
   # Enables the Swoosh mailbox preview in development.
@@ -37,6 +37,6 @@ defmodule KuraBackendWeb.Router do
   end
 
   if Mix.env() == :dev do
-    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: KuraBackendWeb.Schema
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: KuraWeb.Schema
   end
 end

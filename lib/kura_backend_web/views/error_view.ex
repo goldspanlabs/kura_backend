@@ -1,5 +1,5 @@
-defmodule KuraBackendWeb.ErrorView do
-  use KuraBackendWeb, :view
+defmodule KuraWeb.ErrorView do
+  use KuraWeb, :view
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

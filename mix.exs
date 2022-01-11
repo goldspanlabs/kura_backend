@@ -3,7 +3,7 @@ defmodule KuraBackend.MixProject do
 
   def project do
     [
-      app: :kura_backend,
+      app: :kura,
       version: "0.1.0",
       elixir: "~> 1.13.1",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule KuraBackend.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {KuraBackend.Application, []},
+      mod: {Kura.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

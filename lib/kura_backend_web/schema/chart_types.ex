@@ -1,8 +1,8 @@
-defmodule KuraBackendWeb.Schema.ChartTypes do
+defmodule KuraWeb.Schema.ChartTypes do
   use Absinthe.Schema.Notation
 
-  alias KuraBackendWeb.Resolvers
-  alias KuraBackendWeb.Schema.Middleware
+  alias KuraWeb.Resolvers
+  alias KuraWeb.Schema.Middleware
 
   object :pnl_data do
     field :period, :string

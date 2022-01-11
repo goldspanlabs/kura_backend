@@ -1,4 +1,4 @@
-defmodule KuraBackend.Accounts.UserToken do
+defmodule Kura.Accounts.UserToken do
   use Ecto.Schema
   import Ecto.Query
 
@@ -18,7 +18,7 @@ defmodule KuraBackend.Accounts.UserToken do
     field :token, :binary
     field :context, :string
     field :sent_to, :string
-    belongs_to :user, KuraBackend.Accounts.User
+    belongs_to :user, Kura.Accounts.User
 
     timestamps(updated_at: false)
   end
@@ -44,7 +44,7 @@ defmodule KuraBackend.Accounts.UserToken do
   """
   def build_session_token(user) do
     token = :crypto.strong_rand_bytes(@rand_size)
-    {token, %KuraBackend.Accounts.UserToken{token: token, context: "session", user_id: user.id}}
+    {token, %Kura.Accounts.UserToken{token: token, context: "session", user_id: user.id}}
   end
 
   @doc """
@@ -87,7 +87,7 @@ defmodule KuraBackend.Accounts.UserToken do
     hashed_token = :crypto.hash(@hash_algorithm, token)
 
     {Base.url_encode64(token, padding: false),
-     %KuraBackend.Accounts.UserToken{
+     %Kura.Accounts.UserToken{
        token: hashed_token,
        context: context,
        sent_to: sent_to,
@@ -164,18 +164,18 @@ defmodule KuraBackend.Accounts.UserToken do
   Returns the token struct for the given token value and context.
   """
   def token_and_context_query(token, context) do
-    from KuraBackend.Accounts.UserToken, where: [token: ^token, context: ^context]
+    from Kura.Accounts.UserToken, where: [token: ^token, context: ^context]
   end
 
   @doc """
   Gets all tokens for the given user for the given contexts.
   """
   def user_and_contexts_query(user, :all) do
-    from t in KuraBackend.Accounts.UserToken, where: t.user_id == ^user.id
+    from t in Kura.Accounts.UserToken, where: t.user_id == ^user.id
   end
 
   def user_and_contexts_query(user, [_ | _] = contexts) do
-    from t in KuraBackend.Accounts.UserToken,
+    from t in Kura.Accounts.UserToken,
       where: t.user_id == ^user.id and t.context in ^contexts
   end
 end

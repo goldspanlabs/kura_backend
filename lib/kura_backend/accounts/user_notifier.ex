@@ -1,7 +1,7 @@
-defmodule KuraBackend.Accounts.UserNotifier do
+defmodule Kura.Accounts.UserNotifier do
   import Swoosh.Email
 
-  alias KuraBackend.Mailer
+  alias Kura.Mailer
 
   # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do

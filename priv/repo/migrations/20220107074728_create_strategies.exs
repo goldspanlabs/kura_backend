@@ -1,4 +1,4 @@
-defmodule KuraBackend.Repo.Migrations.CreateStrategy do
+defmodule Kura.Repo.Migrations.CreateStrategy do
   use Ecto.Migration
 
   def change do

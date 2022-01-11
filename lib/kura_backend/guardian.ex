@@ -1,7 +1,7 @@
-defmodule KuraBackend.Guardian do
-  use Guardian, otp_app: :kura_backend
+defmodule Kura.Guardian do
+  use Guardian, otp_app: :kura
 
-  alias KuraBackend.Accounts
+  alias Kura.Accounts
 
   def subject_for_token(resource, _claims) do
     sub = to_string(resource.id)

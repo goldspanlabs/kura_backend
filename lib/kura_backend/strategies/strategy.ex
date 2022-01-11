@@ -1,4 +1,4 @@
-defmodule KuraBackend.Strategies.Strategy do
+defmodule Kura.Strategies.Strategy do
   use Ecto.Schema
   import Ecto.Changeset
 

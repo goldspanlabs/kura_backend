@@ -1,4 +1,4 @@
-defmodule KuraBackend.Transactions.Transaction do
+defmodule Kura.Transactions.Transaction do
   use Ecto.Schema
   import Ecto.Changeset
 

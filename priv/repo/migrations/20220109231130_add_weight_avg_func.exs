@@ -1,4 +1,4 @@
-defmodule KuraBackend.Repo.Migrations.AddWeightAvgFunc do
+defmodule Kura.Repo.Migrations.AddWeightAvgFunc do
   use Ecto.Migration
 
   def up do

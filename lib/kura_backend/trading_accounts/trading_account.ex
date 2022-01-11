@@ -1,4 +1,4 @@
-defmodule KuraBackend.TradingAccounts.TradingAccount do
+defmodule Kura.TradingAccounts.TradingAccount do
   use Ecto.Schema
   import Ecto.Changeset
 

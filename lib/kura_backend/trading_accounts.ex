@@ -1,12 +1,12 @@
-defmodule KuraBackend.TradingAccounts do
+defmodule Kura.TradingAccounts do
   @moduledoc """
   The TradingAccounts context.
   """
 
   import Ecto.Query, warn: false
-  alias KuraBackend.Repo
+  alias Kura.Repo
 
-  alias KuraBackend.TradingAccounts.TradingAccount
+  alias Kura.TradingAccounts.TradingAccount
 
   @doc """
   Returns the list of trading_accounts.

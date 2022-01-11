@@ -1,8 +1,8 @@
-defmodule KuraBackendWeb.Schema.TradingAccountTypes do
+defmodule KuraWeb.Schema.TradingAccountTypes do
   use Absinthe.Schema.Notation
 
-  alias KuraBackendWeb.Resolvers
-  alias KuraBackendWeb.Schema.Middleware
+  alias KuraWeb.Resolvers
+  alias KuraWeb.Schema.Middleware
 
   object :trading_account do
     field :id, non_null(:id)

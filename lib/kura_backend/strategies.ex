@@ -1,12 +1,12 @@
-defmodule KuraBackend.Strategies do
+defmodule Kura.Strategies do
   @moduledoc """
   The Strategies context.
   """
 
   import Ecto.Query, warn: false
-  alias KuraBackend.Repo
+  alias Kura.Repo
 
-  alias KuraBackend.Strategies.Strategy
+  alias Kura.Strategies.Strategy
 
   @doc """
   Returns the list of strategy.

@@ -1,4 +1,4 @@
-defmodule KuraBackendWeb.Context do
+defmodule KuraWeb.Context do
   @behaviour Plug
 
   import Plug.Conn
@@ -17,7 +17,7 @@ defmodule KuraBackendWeb.Context do
 
   defp build_context(conn) do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
-         {:ok, user, _claims} <- KuraBackend.Guardian.resource_from_token(token) do
+         {:ok, user, _claims} <- Kura.Guardian.resource_from_token(token) do
       {:ok, %{current_user: user}}
     end
   end

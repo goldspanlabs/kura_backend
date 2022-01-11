@@ -1,4 +1,4 @@
-defmodule KuraBackend.Goals.Goal do
+defmodule Kura.Goals.Goal do
   use Ecto.Schema
   import Ecto.Changeset
 

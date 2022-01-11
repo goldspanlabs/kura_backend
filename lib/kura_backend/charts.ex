@@ -1,9 +1,9 @@
-defmodule KuraBackend.Charts do
+defmodule Kura.Charts do
   import Ecto.Query, warn: false
-  import KuraBackend.Query
+  import Kura.Query
 
-  alias KuraBackend.Repo
-  alias KuraBackend.Positions
+  alias Kura.Repo
+  alias Kura.Positions
 
   defp base(user_id) do
     subquery(Positions.do_closed_positions(user_id))

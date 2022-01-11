@@ -1,4 +1,4 @@
-defmodule KuraBackend.Repo.Migrations.AddOptionFieldsToTransactions do
+defmodule Kura.Repo.Migrations.AddOptionFieldsToTransactions do
   use Ecto.Migration
 
   def change do

@@ -5,17 +5,17 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     KuraBackend.Repo.insert!(%KuraBackend.SomeSchema{})
+#     Kura.Repo.insert!(%Kura.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
 defmodule Seeds do
-  alias KuraBackend.Accounts.User
-  alias KuraBackend.TradingAccounts.TradingAccount
-  alias KuraBackend.Strategies.Strategy
-  alias KuraBackend.Transactions.Transaction
-  alias KuraBackend.Repo
+  alias Kura.Accounts.User
+  alias Kura.TradingAccounts.TradingAccount
+  alias Kura.Strategies.Strategy
+  alias Kura.Transactions.Transaction
+  alias Kura.Repo
 
   def insert_strategy(attrs) do
     %Strategy{}

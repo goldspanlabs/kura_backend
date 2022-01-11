@@ -1,11 +1,11 @@
-defmodule KuraBackend.Positions do
+defmodule Kura.Positions do
   import Ecto.Query, warn: false
-  import KuraBackend.Query
+  import Kura.Query
 
-  alias KuraBackend.Repo
-  alias KuraBackend.Transactions.Transaction
-  alias KuraBackend.TradingAccounts.TradingAccount
-  alias KuraBackend.Strategies.Strategy
+  alias Kura.Repo
+  alias Kura.Transactions.Transaction
+  alias Kura.TradingAccounts.TradingAccount
+  alias Kura.Strategies.Strategy
 
   defp base(user_id) do
     Transaction
