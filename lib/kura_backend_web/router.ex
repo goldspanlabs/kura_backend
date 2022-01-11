@@ -1,18 +1,12 @@
 defmodule KuraWeb.Router do
   use KuraWeb, :router
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   pipeline :api_authenticated do
     plug KuraWeb.AuthAccessPipeline
     plug KuraWeb.Context
   end
 
-  pipeline :graphql do
-    plug KuraWeb.Context
-  end
+  forward "/graphiql", Absinthe.Plug.GraphiQL, schema: KuraWeb.Schema
 
   scope "/api" do
     pipe_through :api_authenticated
@@ -34,9 +28,5 @@ defmodule KuraWeb.Router do
 
   if Mix.env() == :dev do
     forward "/sent_emails", Bamboo.SentEmailViewerPlug
-  end
-
-  if Mix.env() == :dev do
-    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: KuraWeb.Schema
   end
 end
