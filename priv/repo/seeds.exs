@@ -42,6 +42,11 @@ defmodule Seeds do
   end
 
   def run do
+    Repo.truncate(Transaction, :cascade)
+    Repo.truncate(TradingAccount, :cascade)
+    Repo.truncate(User, :cascade)
+    Repo.truncate(Strategy, :cascade)
+
     strategy = insert_strategy(%{label: "Covered Call", legs: 2})
     strategy_2 = insert_strategy(%{label: "Short Call", legs: 1})
 
@@ -64,24 +69,30 @@ defmodule Seeds do
         trading_account_id: account.id
       },
       %{
-        symbol: "ABCD 31 Jan 22 15 C",
+        symbol: "ABCD 1 Jan 31 15 C",
         trade_date: ~D[2022-01-01],
         price: 1.00,
         fee: 11.24,
         quantity: 1,
         asset_type: "option",
         action: "STO",
+        expiration: ~D[2022-01-31],
+        strike: 15,
+        option_type: "C",
         strategy_id: strategy.id,
         trading_account_id: account.id
       },
       %{
-        symbol: "ABCD 31 Jan 22 15 P",
+        symbol: "ABCD 1 Jan 31 15 P",
         trade_date: ~D[2022-01-01],
         price: 1.00,
         fee: 11.24,
         quantity: 1,
         asset_type: "option",
         action: "STO",
+        expiration: ~D[2022-01-31],
+        strike: 15,
+        option_type: "P",
         strategy_id: strategy_2.id,
         trading_account_id: account.id
       },
@@ -97,24 +108,30 @@ defmodule Seeds do
         trading_account_id: account_2.id
       },
       %{
-        symbol: "ABCD 31 Jan 22 15 C",
+        symbol: "ABCD 1 Jan 31 15 C",
         trade_date: ~D[2022-01-01],
         price: 1.00,
         fee: 11.24,
         quantity: 1,
         asset_type: "option",
         action: "STO",
+        expiration: ~D[2022-01-31],
+        strike: 15,
+        option_type: "C",
         strategy_id: strategy.id,
         trading_account_id: account_2.id
       },
       %{
-        symbol: "ABCD 31 Jan 22 15 P",
+        symbol: "ABCD 1 Jan 31 15 P",
         trade_date: ~D[2022-01-01],
         price: 1.00,
         fee: 11.24,
         quantity: 1,
         asset_type: "option",
         action: "STO",
+        expiration: ~D[2022-01-31],
+        strike: 15,
+        option_type: "P",
         strategy_id: strategy_2.id,
         trading_account_id: account_2.id
       }

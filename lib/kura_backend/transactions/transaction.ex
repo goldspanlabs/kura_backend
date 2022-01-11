@@ -12,6 +12,9 @@ defmodule KuraBackend.Transactions.Transaction do
     field :quantity, :integer
     field :symbol, :string
     field :trade_date, :date
+    field :expiration, :date
+    field :strike, :decimal
+    field :option_type, :string
     field :strategy_id, :binary_id
     field :trading_account_id, :binary_id
 
@@ -29,6 +32,9 @@ defmodule KuraBackend.Transactions.Transaction do
       :quantity,
       :asset_type,
       :action,
+      :expiration,
+      :strike,
+      :option_type,
       :strategy_id,
       :trading_account_id
     ])
