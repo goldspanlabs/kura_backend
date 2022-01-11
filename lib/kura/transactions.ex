@@ -21,11 +21,7 @@ defmodule Kura.Transactions do
       [%Transaction{}, ...]
 
   """
-  def list_transactions do
-    Repo.all(Transaction)
-  end
-
-  def list_transactions_with_costs(user_id) do
+  def list_transactions(user_id) do
     Transaction
     |> join(:inner, [t], s in Strategy, as: :s, on: s.id == t.strategy_id)
     |> join(:inner, [t, _], a in TradingAccount, as: :a, on: a.id == t.trading_account_id)
@@ -48,6 +44,7 @@ defmodule Kura.Transactions do
       trading_account_name: a.name
     })
     |> where([a: a], a.user_id == ^user_id)
+    |> order_by([t], desc: t.trade_date)
     |> Repo.all()
   end
 

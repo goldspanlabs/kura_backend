@@ -2,7 +2,7 @@ defmodule KuraWeb.Resolvers.Transactions do
   alias Kura.Transactions.Transaction
 
   def list_transactions(_, _, %{context: %{current_user: current_user}}) do
-    {:ok, Kura.Transactions.list_transactions_with_costs(current_user.id)}
+    {:ok, Kura.Transactions.list_transactions(current_user.id)}
   end
 
   def insert_transaction_one(_, %{object: object}, _) do
