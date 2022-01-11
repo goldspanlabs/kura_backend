@@ -9,10 +9,10 @@ defmodule KuraBackend.Positions do
 
   defp base(user_id) do
     Transaction
-    |> join(:inner, [t], a in TradingAccount, on: t.trading_account_id == a.id)
-    |> join(:inner, [t], s in Strategy, on: t.strategy_id == s.id)
-    |> where([_, a, _], a.user_id == ^user_id)
-    |> select([t, a, s], %{
+    |> join(:inner, [t], a in TradingAccount, as: :a, on: t.trading_account_id == a.id)
+    |> join(:inner, [t], s in Strategy, as: :s, on: t.strategy_id == s.id)
+    |> where([a: a], a.user_id == ^user_id)
+    |> select([t, a: a, s: s], %{
       strategy: s.label,
       symbol: t.symbol,
       action: t.action,
@@ -127,7 +127,7 @@ defmodule KuraBackend.Positions do
     ])
   end
 
-  def open_positions(user_id) do
+  def do_open_positions(user_id) do
     subquery(open_averages(user_id))
     |> join(:inner, [oa], t in subquery(trades(user_id)), on: t.symbol == oa.symbol)
     |> select([oa, t], %{
@@ -158,10 +158,9 @@ defmodule KuraBackend.Positions do
       oa.trading_account_id,
       oa.trading_account_name
     ])
-    |> Repo.all()
   end
 
-  def closed_positions(user_id) do
+  def do_closed_positions(user_id) do
     subquery(trades(user_id))
     |> join(:inner, [t], t2 in subquery(grouped_trades(user_id)),
       on:
@@ -186,6 +185,13 @@ defmodule KuraBackend.Positions do
       [t, t2],
       (t.action == "BTO" or t.action == "STO") and (t2.action != "BTO" and t2.action != "STO")
     )
-    |> Repo.all()
+  end
+
+  def open_positions(user_id) do
+    do_open_positions(user_id) |> Repo.all()
+  end
+
+  def closed_positions(user_id) do
+    do_closed_positions(user_id) |> Repo.all()
   end
 end
