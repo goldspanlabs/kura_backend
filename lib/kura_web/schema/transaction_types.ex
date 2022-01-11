@@ -36,6 +36,7 @@ defmodule KuraWeb.Schema.TransactionTypes do
 
   object :transaction_queries do
     field :transactions, list_of(:transaction) do
+      arg(:limit, :integer)
       middleware(Middleware.Authorize)
       resolve(&Resolvers.Transactions.list_transactions/3)
     end
