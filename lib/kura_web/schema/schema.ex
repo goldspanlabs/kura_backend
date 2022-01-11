@@ -20,5 +20,6 @@ defmodule KuraWeb.Schema do
   mutation do
     import_fields(:session_mutations)
     import_fields(:user_mutations)
+    import_fields(:transaction_mutations)
   end
 end
