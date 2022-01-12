@@ -21,6 +21,7 @@ defmodule Kura.Transactions do
       [%Transaction{}, ...]
 
   """
+
   def list_transactions(user_id, nil) do
     do_list_transactions(user_id)
     |> Repo.all()
@@ -29,6 +30,13 @@ defmodule Kura.Transactions do
   def list_transactions(user_id, limit) do
     do_list_transactions(user_id)
     |> limit(^limit)
+    |> Repo.all()
+  end
+
+  def strategy_details(user_id, root, strategy) do
+    do_list_transactions(user_id)
+    |> where([t], ilike(t.symbol, ^"#{root}%"))
+    |> where([s: s], s.label == ^strategy)
     |> Repo.all()
   end
 

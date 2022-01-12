@@ -40,6 +40,13 @@ defmodule KuraWeb.Schema.TransactionTypes do
       middleware(Middleware.Authorize)
       resolve(&Resolvers.Transactions.list_transactions/3)
     end
+
+    field :strategy_details, list_of(:transaction) do
+      arg(:root, non_null(:string))
+      arg(:strategy, non_null(:string))
+      middleware(Middleware.Authorize)
+      resolve(&Resolvers.Transactions.strategy_details/3)
+    end
   end
 
   object :transaction_mutations do

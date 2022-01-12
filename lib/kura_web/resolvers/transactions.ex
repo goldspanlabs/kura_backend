@@ -1,6 +1,12 @@
 defmodule KuraWeb.Resolvers.Transactions do
   alias Kura.Transactions.Transaction
 
+  def strategy_details(_, %{root: root, strategy: strategy}, %{
+        context: %{current_user: current_user}
+      }) do
+    {:ok, Kura.Transactions.strategy_details(current_user.id, root, strategy)}
+  end
+
   def list_transactions(_, args, %{context: %{current_user: current_user}}) do
     {:ok, Kura.Transactions.list_transactions(current_user.id, Map.get(args, :limit))}
   end
