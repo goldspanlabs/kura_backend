@@ -56,7 +56,10 @@ defmodule KuraBackend.MixProject do
       {:premailex, "~> 0.3.13"},
       {:guardian, "~> 2.0"},
       {:bcrypt_elixir, "~> 2.0"},
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+
+      # CORS related
+      {:corsica, "~> 1.0"}
     ]
   end
 

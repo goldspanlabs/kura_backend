@@ -40,5 +40,11 @@ defmodule KuraWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+
+  plug Corsica,
+    origins: "*",
+    allow_credentials: true,
+    allow_headers: ["accept", "content-type", "authorization"]
+
   plug KuraWeb.Router
 end
