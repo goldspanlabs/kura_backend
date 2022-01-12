@@ -9,4 +9,10 @@ defmodule Kura.Query do
       )
     end
   end
+
+  defmacro round(number, places) do
+    quote do
+      fragment("round(?, ?)", unquote(number), unquote(places))
+    end
+  end
 end

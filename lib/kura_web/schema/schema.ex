@@ -9,12 +9,14 @@ defmodule KuraWeb.Schema do
   import_types(Schema.PositionTypes)
   import_types(Schema.TransactionTypes)
   import_types(Schema.ChartTypes)
+  import_types(Schema.StatTypes)
 
   query do
     import_fields(:trading_account_queries)
     import_fields(:position_queries)
     import_fields(:transaction_queries)
     import_fields(:chart_queries)
+    import_fields(:stat_queries)
   end
 
   mutation do
