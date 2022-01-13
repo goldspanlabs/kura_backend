@@ -14,6 +14,7 @@ defmodule Kura.Positions do
     |> where([a: a], a.user_id == ^user_id)
     |> select([t, a: a, s: s], %{
       strategy: s.label,
+      strategy_id: t.strategy_id,
       symbol: t.symbol,
       action: t.action,
       asset_type: t.asset_type,
@@ -38,7 +39,9 @@ defmodule Kura.Positions do
     subquery(base(user_id))
     |> select([b], %{
       strategy: b.strategy,
+      strategy_id: b.strategy_id,
       symbol: b.symbol,
+      root: fragment("split_part(?, ' ', 1)", b.symbol),
       action: b.action,
       asset_type: b.asset_type,
       trade_date: b.trade_date,
@@ -63,7 +66,9 @@ defmodule Kura.Positions do
     subquery(trades(user_id))
     |> select([b], %{
       symbol: b.symbol,
+      root: b.root,
       strategy: b.strategy,
+      strategy_id: b.strategy_id,
       action: b.action,
       quantity: b.quantity,
       price: b.price,
@@ -78,7 +83,9 @@ defmodule Kura.Positions do
     })
     |> group_by([b], [
       b.symbol,
+      b.root,
       b.strategy,
+      b.strategy_id,
       b.action,
       b.expiration,
       b.option_type,
@@ -132,7 +139,10 @@ defmodule Kura.Positions do
     |> join(:inner, [oa], t in subquery(trades(user_id)), on: t.symbol == oa.symbol)
     |> select([oa, t], %{
       symbol: oa.symbol,
+      root: oa.root,
       strategy: oa.strategy,
+      strategy_id: oa.strategy_id,
+      asset_type: oa.asset_type,
       trade_date: max(t.trade_date),
       expiration: oa.expiration,
       strike: oa.strike,
@@ -149,7 +159,10 @@ defmodule Kura.Positions do
     })
     |> group_by([oa, t], [
       oa.symbol,
+      oa.root,
       oa.strategy,
+      oa.strategy_id,
+      oa.asset_type,
       oa.avg_price,
       oa.expiration,
       oa.option_type,

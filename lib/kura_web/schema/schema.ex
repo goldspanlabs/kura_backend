@@ -10,6 +10,7 @@ defmodule KuraWeb.Schema do
   import_types(Schema.TransactionTypes)
   import_types(Schema.ChartTypes)
   import_types(Schema.StatTypes)
+  import_types(Schema.StrategyTypes)
 
   query do
     import_fields(:trading_account_queries)
@@ -17,6 +18,7 @@ defmodule KuraWeb.Schema do
     import_fields(:transaction_queries)
     import_fields(:chart_queries)
     import_fields(:stat_queries)
+    import_fields(:strategy_queries)
   end
 
   mutation do

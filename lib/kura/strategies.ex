@@ -36,6 +36,7 @@ defmodule Kura.Strategies do
 
   """
   def get_strategy!(id), do: Repo.get!(Strategy, id)
+  def get_strategy(id), do: Repo.get(Strategy, id)
 
   @doc """
   Creates a strategy.

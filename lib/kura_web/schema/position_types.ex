@@ -6,7 +6,10 @@ defmodule KuraWeb.Schema.PositionTypes do
 
   object :open_position do
     field :symbol, :string
+    field :root, :string
     field :strategy, :string
+    field :strategy_id, :string
+    field :asset_type, :string
     field :trade_date, :date
     field :expiration, :date
     field :strike, :decimal

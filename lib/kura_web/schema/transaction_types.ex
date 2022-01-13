@@ -8,6 +8,7 @@ defmodule KuraWeb.Schema.TransactionTypes do
     field :id, :string
     field :symbol, :string
     field :strategy, :string
+    field :strategy_id, :string
     field :trade_date, :string
     field :price, :decimal
     field :fee, :decimal
@@ -43,7 +44,7 @@ defmodule KuraWeb.Schema.TransactionTypes do
 
     field :strategy_details, list_of(:transaction) do
       arg(:root, non_null(:string))
-      arg(:strategy, non_null(:string))
+      arg(:strategy_id, non_null(:string))
       middleware(Middleware.Authorize)
       resolve(&Resolvers.Transactions.strategy_details/3)
     end

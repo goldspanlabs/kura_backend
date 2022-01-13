@@ -33,10 +33,10 @@ defmodule Kura.Transactions do
     |> Repo.all()
   end
 
-  def strategy_details(user_id, root, strategy) do
+  def strategy_details(user_id, root, strategy_id) do
     do_list_transactions(user_id)
     |> where([t], ilike(t.symbol, ^"#{root}%"))
-    |> where([s: s], s.label == ^strategy)
+    |> where([s: s], s.id == ^strategy_id)
     |> Repo.all()
   end
 
@@ -48,6 +48,7 @@ defmodule Kura.Transactions do
       id: t.id,
       symbol: t.symbol,
       strategy: s.label,
+      strategy_id: t.strategy_id,
       trade_date: t.trade_date,
       price: t.price,
       fee: t.fee,
