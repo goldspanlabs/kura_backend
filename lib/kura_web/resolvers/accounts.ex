@@ -2,8 +2,13 @@ defmodule KuraWeb.Resolvers.Accounts do
   alias Kura.Accounts
   alias Kura.Accounts.User
 
-  def create_user(_parent, args, _context) do
-    Accounts.register_user(args)
+  def sign_up(_parent, args, _context) do
+    with {:ok, %User{} = user} <- Accounts.register_user(args),
+         {:ok, jwt, _full_claims} <- Kura.Guardian.encode_and_sign(user) do
+      {:ok, %{token: jwt}}
+    else
+      _ -> {:error, "User exists"}
+    end
   end
 
   def login(%{email: email, password: password}, _info) do
