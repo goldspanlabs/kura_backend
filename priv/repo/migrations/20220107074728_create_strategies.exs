@@ -3,7 +3,7 @@ defmodule Kura.Repo.Migrations.CreateStrategy do
 
   def change do
     create table(:strategies, primary_key: false) do
-      add :id, :binary_id, primary_key: true
+      add :id, :string, primary_key: true
       add :label, :string
       add :legs, :integer
 

@@ -11,7 +11,7 @@ defmodule Kura.Repo.Migrations.CreateTransactions do
       add :quantity, :integer
       add :asset_type, :string
       add :action, :string
-      add :strategy_id, references(:strategies, on_delete: :nothing, type: :binary_id)
+      add :strategy_id, references(:strategies, on_delete: :nothing, type: :string)
 
       add :trading_account_id,
           references(:trading_accounts, on_delete: :nothing, type: :binary_id)

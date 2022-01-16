@@ -45,6 +45,7 @@ defmodule KuraBackend.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:shorter_maps, "~> 2.0"},
       {:decimal, "~> 2.0"},
+      {:timex, "~> 3.0"},
 
       # Absinthe for GraphQL
       {:absinthe, "~> 1.6.5"},
