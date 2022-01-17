@@ -34,7 +34,7 @@ defmodule Seeds do
     {"iron-condor", "Iron Condor", 4}
   ]
 
-  def random_symbol() do
+  def generate_random_symbol() do
     stock_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     Enum.reduce(0..3, "", fn _, acc ->
@@ -44,51 +44,20 @@ defmodule Seeds do
 
   def generate_random_trade_dates() do
     current_date = Date.utc_today()
-    rand_num = Enum.random(-180..1)
+    rand_num = Enum.random(-180..0)
     start_date = Date.add(current_date, rand_num) |> Date.beginning_of_week()
-    end_date = Date.add(start_date, Enum.random(1..rand_num)) |> Date.end_of_week(:saturday)
+    end_date = Date.add(start_date, Enum.random(0..210)) |> Date.end_of_week(:saturday)
 
     {start_date, end_date}
   end
 
-  def single(account_id, symbol, entry_date, exit_date, option_type \\ "C") do
-    strike = Enum.random(10..100)
-    price = round(strike * 0.1 * 100) / 100
-    quantity = Enum.random(1..10)
+  def generate_prices(quantity) do
+    strike = Enum.random(15..200)
     fee = round((9.99 + quantity * 1.25) * 100) / 100
+    entry_price = round(strike * 0.1 * 100) / 100
+    exit_price = Enum.random(0..(round(entry_price) * 4))
 
-    {:ok, formatted_date} = Timex.format(exit_date, "{D} {Mshort} {YY}")
-    symbol = "#{symbol} #{formatted_date} #{strike} #{option_type}"
-
-    insert_transaction(%{
-      symbol: symbol,
-      trade_date: entry_date,
-      price: price,
-      fee: fee,
-      quantity: quantity,
-      asset_type: "option",
-      action: "BTO",
-      expiration: exit_date,
-      strike: strike,
-      option_type: option_type,
-      strategy_id: "single",
-      trading_account_id: account_id
-    })
-
-    insert_transaction(%{
-      symbol: symbol,
-      trade_date: exit_date,
-      price: price,
-      fee: fee,
-      quantity: quantity,
-      asset_type: "option",
-      action: "BTC",
-      expiration: exit_date,
-      strike: strike,
-      option_type: option_type,
-      strategy_id: "single",
-      trading_account_id: account_id
-    })
+    {entry_price, exit_price, fee, strike, strike + strike * Enum.random(-5..5) / 100}
   end
 
   def insert_strategy(attrs) do
@@ -115,6 +84,38 @@ defmodule Seeds do
     |> Repo.insert!()
   end
 
+  def single(opts, :open), do: do_single(opts, :open)
+
+  def single(opts, :close) do
+    do_single(opts, :open)
+    do_single(opts, :close)
+  end
+
+  def do_single(opts, action) do
+    trade_date = if action == :open, do: opts.trade_date, else: opts.exit_date
+    price = if action == :open, do: opts.entry_price, else: opts.exit_price
+
+    {action, side} =
+      if action == :open,
+        do: Enum.random([{"BTO", 1}, {"STO", -1}]),
+        else: Enum.random([{"BTC", 1}, {"STC", -1}])
+
+    insert_transaction(%{
+      trading_account_id: opts.account_id,
+      symbol: opts.symbol,
+      trade_date: trade_date,
+      quantity: opts.quantity * side,
+      action: action,
+      price: price,
+      fee: opts.fee,
+      strike: opts.strike,
+      expiration: opts.exit_date,
+      asset_type: "option",
+      strategy_id: "single",
+      option_type: opts.option_type
+    })
+  end
+
   def run do
     Repo.truncate(Transaction, :cascade)
     Repo.truncate(TradingAccount, :cascade)
@@ -132,8 +133,24 @@ defmodule Seeds do
     |> Enum.each(fn u ->
       user = insert_user(u)
       account = insert_trading_account(%{name: "MARGIN", currency: "USD", user_id: user.id})
-      {start_date, end_date} = generate_random_trade_dates()
-      single(account.id, random_symbol(), start_date, end_date)
+
+      Enum.each(1..50, fn n ->
+        {trade_date, exit_date} = generate_random_trade_dates()
+        {strategy, _, _} = Enum.random(@option_strategies)
+        quantity = Enum.random(1..10)
+        {entry_price, exit_price, fee, strike, underlying_price} = generate_prices(quantity)
+        option_type = Enum.random(["C", "P"])
+
+        {:ok, formatted_date} = Timex.format(exit_date, "{D} {Mshort} {YY}")
+        symbol = "#{generate_random_symbol()} #{formatted_date} #{strike} #{option_type}"
+
+        position = if Date.compare(exit_date, Date.utc_today()) == :gt, do: :open, else: :close
+
+        single(
+          ~M{account_id: account.id, symbol, option_type, trade_date, exit_date, quantity, entry_price, exit_price, fee, strike, underlying_price},
+          position
+        )
+      end)
     end)
   end
 end
