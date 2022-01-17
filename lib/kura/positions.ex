@@ -220,7 +220,7 @@ defmodule Kura.Positions do
       [t, t2],
       (t.action == "BTO" or t.action == "STO") and (t2.action != "BTO" and t2.action != "STO")
     )
-    |> order_by([t2], desc: t2.trade_date)
+    |> order_by([_, t2], desc: t2.trade_date)
   end
 
   def open_positions(user_id) do
