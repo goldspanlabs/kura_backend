@@ -62,38 +62,60 @@ defmodule Kura.Positions do
     })
   end
 
+  def open_pos(user_id) do
+    subquery(trades(user_id))
+    |> select([t], %{
+      symbol: t.symbol,
+      root: t.root,
+      strategy: t.strategy,
+      strategy_id: t.strategy_id,
+      expiration: t.expiration,
+      option_type: t.option_type,
+      strike: t.strike,
+      asset_type: t.asset_type,
+      trading_account_name: t.trading_account_name,
+      trading_account_id: t.trading_account_id
+    })
+    |> group_by([t], [
+      t.symbol,
+      t.root,
+      t.strategy,
+      t.strategy_id,
+      t.expiration,
+      t.option_type,
+      t.strike,
+      t.asset_type,
+      t.trading_account_name,
+      t.trading_account_id
+    ])
+    |> having([t], sum(t.quantity) != 0)
+  end
+
   defp open_averages(user_id) do
     subquery(trades(user_id))
+    |> join(:inner, [t], op in subquery(open_pos(user_id)), on: op.symbol == t.symbol)
     |> select([b], %{
       symbol: b.symbol,
       root: b.root,
       strategy: b.strategy,
       strategy_id: b.strategy_id,
-      action: b.action,
-      quantity: b.quantity,
-      price: b.price,
-      fee: b.fee,
       expiration: b.expiration,
+      option_type: b.option_type,
       strike: b.strike,
       asset_type: b.asset_type,
-      option_type: b.option_type,
-      avg_price: fragment("round(weighted_avg(?, ?)::NUMERIC, 2)", b.adjusted_price, b.quantity),
       trading_account_name: b.trading_account_name,
-      trading_account_id: b.trading_account_id
+      trading_account_id: b.trading_account_id,
+      avg_price: fragment("round(weighted_avg(?, ?)::NUMERIC, 2)", b.adjusted_price, b.quantity)
     })
     |> group_by([b], [
       b.symbol,
       b.root,
       b.strategy,
       b.strategy_id,
-      b.action,
       b.expiration,
       b.option_type,
       b.strike,
       b.asset_type,
-      b.quantity,
-      b.price,
-      b.fee,
       b.expiration,
       b.option_type,
       b.strike,
@@ -101,7 +123,6 @@ defmodule Kura.Positions do
       b.trading_account_name,
       b.trading_account_id
     ])
-    |> having([b], b.quantity != 0)
   end
 
   defp grouped_trades(user_id) do
