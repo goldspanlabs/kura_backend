@@ -44,9 +44,9 @@ defmodule Seeds do
 
   def generate_random_trade_dates() do
     current_date = Date.utc_today()
-    rand_num = Enum.random(-180..0)
+    rand_num = Enum.random(-90..0)
     start_date = Date.add(current_date, rand_num) |> Date.beginning_of_week()
-    end_date = Date.add(start_date, Enum.random(0..210)) |> Date.end_of_week(:saturday)
+    end_date = Date.add(start_date, Enum.random(0..30)) |> Date.end_of_week(:saturday)
 
     {start_date, end_date}
   end
@@ -84,21 +84,30 @@ defmodule Seeds do
     |> Repo.insert!()
   end
 
-  def single(opts, :open), do: do_single(opts, :open)
+  def single(opts, :open) do
+    do_single(opts, "BTO")
+
+    if Date.compare(opts.exit_date, Date.utc_today()) == :lt do
+      do_single(opts, "EXP")
+    end
+  end
 
   def single(opts, :close) do
-    do_single(opts, :open)
-    do_single(opts, :close)
+    do_single(opts, "BTO")
+    do_single(opts, "STC")
   end
 
   def do_single(opts, action) do
-    trade_date = if action == :open, do: opts.trade_date, else: opts.exit_date
-    price = if action == :open, do: opts.entry_price, else: opts.exit_price
+    trade_date = if action == "BTO" or action == "STO", do: opts.trade_date, else: opts.exit_date
 
-    {action, side} =
-      if action == :open,
-        do: Enum.random([{"BTO", 1}, {"STO", -1}]),
-        else: Enum.random([{"BTC", 1}, {"STC", -1}])
+    price = if action == "BTO" or action == "STO", do: opts.entry_price, else: opts.exit_price
+
+    side =
+      cond do
+        action == "BTO" or action == "BTC" -> 1
+        action == "STO" or action == "STC" -> -1
+        true -> 0
+      end
 
     insert_transaction(%{
       trading_account_id: opts.account_id,
