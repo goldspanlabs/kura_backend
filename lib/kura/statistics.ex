@@ -54,7 +54,10 @@ defmodule Kura.Statistics do
   defp win_rate(user_id) do
     if Decimal.compare(total_count(user_id), 0) == :eq,
       do: Decimal.new(0),
-      else: Decimal.div(win_count(user_id), total_count(user_id)) |> Decimal.mult(100)
+      else:
+        Decimal.div(win_count(user_id), total_count(user_id))
+        |> Decimal.mult(100)
+        |> Decimal.round(2)
   end
 
   def dashboard_stats(user_id) do
