@@ -15,7 +15,7 @@ defmodule Kura.Transactions.Transaction do
     field :expiration, :date
     field :strike, :decimal
     field :option_type, :string
-    field :strategy_id, :binary_id
+    field :strategy_id, :string
     field :trading_account_id, :binary_id
 
     timestamps()
