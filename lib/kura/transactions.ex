@@ -56,7 +56,7 @@ defmodule Kura.Transactions do
       total_cost:
         case_when(t.asset_type == "option",
           do: t.price * t.quantity * 100 + t.fee,
-          else: t.price + t.quantity + t.fee
+          else: t.price * t.quantity + t.fee
         ),
       asset_type: t.asset_type,
       action: t.action,
