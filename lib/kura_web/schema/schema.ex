@@ -4,6 +4,7 @@ defmodule KuraWeb.Schema do
   alias KuraWeb.Schema
 
   import_types(Absinthe.Type.Custom)
+  import_types(Absinthe.Plug.Types)
   import_types(Schema.UserTypes)
   import_types(Schema.TradingAccountTypes)
   import_types(Schema.PositionTypes)
