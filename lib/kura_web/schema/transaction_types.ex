@@ -75,11 +75,9 @@ defmodule KuraWeb.Schema.TransactionTypes do
 
     field :upload_file, :string do
       arg(:file, non_null(:upload))
+      arg(:account_id, non_null(:id))
 
-      resolve(fn args, _ ->
-        args.file
-        {:ok, :success}
-      end)
+      resolve(&Resolvers.Transactions.file_upload/3)
     end
   end
 end
