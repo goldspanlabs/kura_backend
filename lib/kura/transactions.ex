@@ -148,4 +148,50 @@ defmodule Kura.Transactions do
   def change_transaction(%Transaction{} = transaction, attrs \\ %{}) do
     Transaction.changeset(transaction, attrs)
   end
+
+  def upload_transactions(account_id, file) do
+    now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+
+    data =
+      file.path
+      |> File.stream!()
+      |> CSV.decode(headers: true)
+      |> Enum.map(fn {:ok, row} ->
+        data_row =
+          Enum.reject(row, fn {_k, v} -> v == "" end)
+          |> Map.new(fn {k, v} ->
+            {String.to_existing_atom(k), parse_value(k, v)}
+          end)
+          |> Map.put(:trading_account_id, account_id)
+          |> Map.put(:inserted_at, now)
+          |> Map.put(:updated_at, now)
+
+        if Map.has_key?(data_row, :expiration) do
+          {:ok, formatted_date} = Timex.format(data_row.expiration, "{D} {Mshort} {YY}")
+
+          symbol =
+            "#{data_row.symbol} #{formatted_date} #{data_row.strike} #{data_row.option_type}"
+
+          Map.merge(data_row, %{symbol: symbol, strategy_id: data_row.strategy})
+          |> Map.drop([:strategy])
+        else
+          data_row
+          |> Map.put(:strategy_id, data_row.strategy)
+          |> Map.drop([:strategy])
+        end
+      end)
+
+    Repo.insert_all(Transaction, data)
+  end
+
+  defp parse_value(key, value) when key in ["trade_date", "expiration"],
+    do: Date.from_iso8601!(value)
+
+  defp parse_value(key, value) when key in ["price", "fee", "strike"],
+    do: Decimal.new(value)
+
+  defp parse_value(key, value) when key == "quantity",
+    do: String.to_integer(value)
+
+  defp parse_value(_key, value), do: value
 end
