@@ -72,5 +72,12 @@ defmodule KuraWeb.Schema.TransactionTypes do
       middleware(Middleware.Authorize)
       resolve(&Resolvers.Transactions.delete_transaction_by_pk/3)
     end
+
+    field :upload_file, :string do
+      arg(:file, non_null(:upload))
+      arg(:account_id, non_null(:id))
+
+      resolve(&Resolvers.Transactions.file_upload/3)
+    end
   end
 end

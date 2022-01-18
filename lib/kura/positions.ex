@@ -91,7 +91,7 @@ defmodule Kura.Positions do
     |> having([t], sum(t.quantity) != 0)
   end
 
-  defp open_averages(user_id) do
+  def open_averages(user_id) do
     subquery(trades(user_id))
     |> join(:inner, [t], op in subquery(open_pos(user_id)), on: op.symbol == t.symbol)
     |> select([b], %{
