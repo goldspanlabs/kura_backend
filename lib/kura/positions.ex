@@ -125,7 +125,7 @@ defmodule Kura.Positions do
     ])
   end
 
-  defp grouped_trades(user_id) do
+  def grouped_trades(user_id) do
     subquery(trades(user_id))
     |> select([t], %{
       symbol: t.symbol,
@@ -196,7 +196,7 @@ defmodule Kura.Positions do
   end
 
   def do_closed_positions(user_id) do
-    subquery(trades(user_id))
+    subquery(grouped_trades(user_id))
     |> join(:inner, [t], t2 in subquery(grouped_trades(user_id)),
       on:
         t.symbol == t2.symbol and t.strategy == t2.strategy and
