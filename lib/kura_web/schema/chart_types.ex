@@ -5,13 +5,13 @@ defmodule KuraWeb.Schema.ChartTypes do
   alias KuraWeb.Schema.Middleware
 
   object :data do
-    field :label, :string
-    field :values, list_of(:decimal)
+    field :name, :string
+    field :data, list_of(:decimal)
   end
 
   object :pnl_data do
     field :categories, list_of(:string)
-    field :series, :data
+    field :series, list_of(:data)
   end
 
   object :pnl_comp_data do

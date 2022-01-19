@@ -1,6 +1,7 @@
 defmodule Kura.Charts.PnlCompChart do
   import Ecto.Query, warn: false
   import Kura.Query
+  import ShorterMaps
 
   alias Kura.Repo
   alias Kura.Positions
@@ -70,5 +71,8 @@ defmodule Kura.Charts.PnlCompChart do
     })
     |> order_by([ss], ss.exit_date)
     |> Repo.all()
+    |> Enum.map(fn ~M{cumulated_pnl, exit_date, period} ->
+      ~M{cumulated_pnl: Float.to_string(cumulated_pnl) |> Decimal.new() |> Decimal.round(2), exit_date, period}
+    end)
   end
 end

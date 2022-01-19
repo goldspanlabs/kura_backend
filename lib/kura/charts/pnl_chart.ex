@@ -1,5 +1,6 @@
 defmodule Kura.Charts.PnlChart do
   import Ecto.Query, warn: false
+  import ShorterMaps
 
   alias Kura.Repo
   alias Kura.{Positions, Strategies}
@@ -93,7 +94,8 @@ defmodule Kura.Charts.PnlChart do
 
     series =
       chart_data
-      |> Enum.group_by(& &1.strategy, &Float.to_string(&1.realized_pnl))
+      |> Enum.group_by(& &1.strategy, &(Float.to_string(&1.realized_pnl) |> Decimal.new()))
+      |> Enum.map(fn {name, data} -> ~M{name, data} end)
 
     %{categories: categories, series: series}
   end
