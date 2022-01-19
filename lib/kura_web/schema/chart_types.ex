@@ -4,11 +4,14 @@ defmodule KuraWeb.Schema.ChartTypes do
   alias KuraWeb.Resolvers
   alias KuraWeb.Schema.Middleware
 
-  object :pnl_data do
-    field :period, :string
-    field :strategy, :string
+  object :data do
+    field :label, :string
+    field :values, list_of(:decimal)
+  end
 
-    field :realized_pnl, :decimal
+  object :pnl_data do
+    field :categories, list_of(:string)
+    field :series, :data
   end
 
   object :pnl_comp_data do
@@ -18,7 +21,7 @@ defmodule KuraWeb.Schema.ChartTypes do
   end
 
   object :chart_queries do
-    field :pnl_chart, list_of(:pnl_data) do
+    field :pnl_chart, :pnl_data do
       middleware(Middleware.Authorize)
       resolve(&Resolvers.Charts.pnl_chart/3)
     end

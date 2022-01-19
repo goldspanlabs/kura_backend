@@ -7,6 +7,8 @@ defmodule Kura.Strategies do
   alias Kura.Repo
 
   alias Kura.Strategies.Strategy
+  alias Kura.Transactions.Transaction
+  alias Kura.TradingAccounts.TradingAccount
 
   @doc """
   Returns the list of strategy.
@@ -37,6 +39,15 @@ defmodule Kura.Strategies do
   """
   def get_strategy!(id), do: Repo.get!(Strategy, id)
   def get_strategy(id), do: Repo.get(Strategy, id)
+
+  def get_user_strategies(user_id) do
+    Transaction
+    |> join(:inner, [t], a in TradingAccount, on: a.id == t.trading_account_id)
+    |> join(:inner, [t, a], s in Strategy, on: t.strategy_id == s.id)
+    |> select([_, _, s], %{strategy: s.label})
+    |> where([_, a], a.user_id == ^user_id)
+    |> distinct(true)
+  end
 
   @doc """
   Creates a strategy.
