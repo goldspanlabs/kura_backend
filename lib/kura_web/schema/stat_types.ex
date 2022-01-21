@@ -7,6 +7,7 @@ defmodule KuraWeb.Schema.StatTypes do
   object :dashboard_stats do
     field :avg_pnl, :decimal
     field :total_pnl, :decimal
+    field :monthly_pnl, :decimal
     field :total_fees, :decimal
     field :win_rate, :decimal
   end

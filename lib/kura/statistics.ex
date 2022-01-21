@@ -60,9 +60,28 @@ defmodule Kura.Statistics do
         |> Decimal.round(2)
   end
 
+  defp monthly_pnl(user_id) do
+    subquery(Positions.do_closed_positions(user_id))
+    |> select([cp], sum(cp.realized_pnl * -1))
+    |> where(
+      [cp],
+      fragment(
+        "EXTRACT(MONTH FROM ?) = EXTRACT(MONTH FROM NOW()) AND EXTRACT(YEAR FROM ?) = EXTRACT(YEAR FROM NOW())",
+        cp.exit_date,
+        cp.exit_date
+      )
+    )
+    |> Repo.one()
+    |> case do
+      nil -> Decimal.new(0)
+      tp -> Decimal.new(tp)
+    end
+  end
+
   def dashboard_stats(user_id) do
     %{
       total_pnl: total_pnl(user_id),
+      monthly_pnl: monthly_pnl(user_id),
       total_fees: total_fees(user_id),
       avg_pnl: avg_pnl(user_id),
       win_rate: win_rate(user_id)
