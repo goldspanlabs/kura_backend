@@ -72,7 +72,7 @@ defmodule Kura.Charts.PnlCompChart do
     |> order_by([ss], ss.exit_date)
     |> Repo.all()
     |> Enum.map(fn ~M{cumulated_pnl, exit_date, period} ->
-      ~M{cumulated_pnl: Float.to_string(cumulated_pnl) |> Decimal.new() |> Decimal.round(2), exit_date, period}
+      ~M{cumulated_pnl: Float.to_string(cumulated_pnl) |> Decimal.new() |> Decimal.round(), exit_date, period}
     end)
   end
 end

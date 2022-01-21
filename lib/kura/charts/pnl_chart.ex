@@ -94,7 +94,10 @@ defmodule Kura.Charts.PnlChart do
 
     series =
       chart_data
-      |> Enum.group_by(& &1.strategy, &(Float.to_string(&1.realized_pnl) |> Decimal.new()))
+      |> Enum.group_by(
+        & &1.strategy,
+        &(Float.to_string(&1.realized_pnl) |> Decimal.new() |> Decimal.round(0))
+      )
       |> Enum.map(fn {name, data} -> ~M{name, data} end)
 
     %{categories: categories, series: series}
