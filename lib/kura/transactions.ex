@@ -59,6 +59,9 @@ defmodule Kura.Transactions do
           else: t.price * t.quantity + t.fee
         ),
       asset_type: t.asset_type,
+      option_type: t.option_type,
+      expiration: t.expiration,
+      strike: t.strike,
       action: t.action,
       trading_account_id: t.trading_account_id,
       trading_account_name: a.name

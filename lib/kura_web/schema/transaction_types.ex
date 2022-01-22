@@ -15,6 +15,9 @@ defmodule KuraWeb.Schema.TransactionTypes do
     field :quantity, :integer
     field :total_cost, :decimal
     field :asset_type, :string
+    field :option_type, :string
+    field :expiration, :string
+    field :strike, :decimal
     field :action, :string
     field :trading_account_id, :string
     field :trading_account_name, :string
