@@ -119,7 +119,7 @@ defmodule Kura.Transactions do
   """
   def update_transaction(%Transaction{} = transaction, attrs) do
     transaction
-    |> Transaction.changeset(attrs)
+    |> Transaction.update_changeset(attrs)
     |> Repo.update()
   end
 

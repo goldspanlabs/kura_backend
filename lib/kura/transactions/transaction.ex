@@ -50,4 +50,22 @@ defmodule Kura.Transactions.Transaction do
       :trading_account_id
     ])
   end
+
+  def update_changeset(transaction, attrs) do
+    transaction
+    |> cast(attrs, [
+      :symbol,
+      :trade_date,
+      :price,
+      :fee,
+      :quantity,
+      :asset_type,
+      :action,
+      :expiration,
+      :strike,
+      :option_type,
+      :strategy_id,
+      :trading_account_id
+    ])
+  end
 end
