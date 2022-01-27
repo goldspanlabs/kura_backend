@@ -105,6 +105,10 @@ defmodule Kura.Transactions do
     |> Repo.insert()
   end
 
+  def create_transactions(transactions) do
+    Repo.insert_all(Transaction, transactions)
+  end
+
   @doc """
   Updates a transaction.
 

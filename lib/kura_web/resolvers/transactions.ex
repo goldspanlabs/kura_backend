@@ -20,6 +20,11 @@ defmodule KuraWeb.Resolvers.Transactions do
     end
   end
 
+  def insert_transactions(_, %{object: transactions}, _) do
+    Transactions.create_transactions(transactions)
+    {:ok, %{status: :ok}}
+  end
+
   def update_transaction_by_pk(_, %{id: id, object: object}, _) do
     with %Transaction{} = transaction <- Transactions.get_transaction(id),
          {:ok, %Transaction{}} <- Transactions.update_transaction(transaction, object) do

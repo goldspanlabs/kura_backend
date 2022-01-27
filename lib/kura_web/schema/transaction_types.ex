@@ -23,6 +23,10 @@ defmodule KuraWeb.Schema.TransactionTypes do
     field :trading_account_name, :string
   end
 
+  object :mutation_result do
+    field :status, :boolean
+  end
+
   input_object :transactions_input do
     field :trading_account_id, :string
     field :action, :string
@@ -59,6 +63,13 @@ defmodule KuraWeb.Schema.TransactionTypes do
 
       middleware(Middleware.Authorize)
       resolve(&Resolvers.Transactions.insert_transaction_one/3)
+    end
+
+    field :insert_transactions, :mutation_result do
+      arg(:object, non_null(list_of(:transactions_input)))
+
+      middleware(Middleware.Authorize)
+      resolve(&Resolvers.Transactions.insert_transactions/3)
     end
 
     field :update_transaction_by_pk, :transaction do
