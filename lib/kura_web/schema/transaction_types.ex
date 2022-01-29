@@ -24,7 +24,7 @@ defmodule KuraWeb.Schema.TransactionTypes do
   end
 
   object :mutation_result do
-    field :status, :boolean
+    field :success, :boolean
   end
 
   input_object :transactions_input do

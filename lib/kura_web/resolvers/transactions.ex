@@ -22,7 +22,7 @@ defmodule KuraWeb.Resolvers.Transactions do
 
   def insert_transactions(_, %{object: transactions}, _) do
     Transactions.create_transactions(transactions)
-    {:ok, %{status: :ok}}
+    {:ok, %{success: true}}
   end
 
   def update_transaction_by_pk(_, %{id: id, object: object}, _) do
