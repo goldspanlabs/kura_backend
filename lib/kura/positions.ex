@@ -103,6 +103,7 @@ defmodule Kura.Positions do
       option_type: b.option_type,
       strike: b.strike,
       asset_type: b.asset_type,
+      quantiy: b.quantity,
       trading_account_name: b.trading_account_name,
       trading_account_id: b.trading_account_id,
       avg_price: fragment("round(weighted_avg(?, ?)::NUMERIC, 2)", b.adjusted_price, b.quantity)
@@ -113,13 +114,12 @@ defmodule Kura.Positions do
       b.strategy,
       b.strategy_id,
       b.expiration,
-      b.option_type,
       b.strike,
       b.asset_type,
+      b.quantity,
       b.expiration,
       b.option_type,
       b.strike,
-      b.option_type,
       b.trading_account_name,
       b.trading_account_id
     ])
@@ -157,7 +157,9 @@ defmodule Kura.Positions do
 
   def do_open_positions(user_id) do
     subquery(open_averages(user_id))
-    |> join(:inner, [oa], t in subquery(trades(user_id)), on: t.symbol == oa.symbol)
+    |> join(:inner, [oa], t in subquery(trades(user_id)),
+      on: t.symbol == oa.symbol and t.trading_account_id == oa.trading_account_id
+    )
     |> select([oa, t], %{
       symbol: oa.symbol,
       root: oa.root,
