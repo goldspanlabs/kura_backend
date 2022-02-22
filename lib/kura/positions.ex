@@ -93,7 +93,9 @@ defmodule Kura.Positions do
 
   def open_averages(user_id) do
     subquery(trades(user_id))
-    |> join(:inner, [t], op in subquery(open_pos(user_id)), on: op.symbol == t.symbol)
+    |> join(:inner, [t], op in subquery(open_pos(user_id)),
+      on: op.symbol == t.symbol and op.trading_account_id == t.trading_account_id
+    )
     |> select([b], %{
       symbol: b.symbol,
       root: b.root,
